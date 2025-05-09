@@ -18,7 +18,8 @@ class OrgRoamDbReader:
                 "id":row[0].strip('"'),
                 "file":row[1].strip('"'),
                 "title":row[8].strip('"'),
-                "tags":[]
+                "tags":[],
+                "links_to":[]
              }
             self.nodes[node["id"]] = node
 
@@ -29,18 +30,15 @@ class OrgRoamDbReader:
             node = self.nodes[id]
             node["tags"].append(row[1].strip('"'))
 
-    #------only change this---------
     def read_links(self):
         rows = self.query_table("links")
         for row in rows:
-            dest_id = row[2].strip('"')
-            source_id = row[1].strip('"')
-            node = self.nodes[dest_id]
-            if "links_to" not in node:
-                node["links_to"] = []
-            source_node = self.nodes[source_id]
-            node["links_to"].append(source_node["title"])
-    #--------------------------------
+            if rows[3] == "id": # type == "id"
+                source_id = row[1].strip('"')
+                dest_id = row[2].strip('"')
+                node = self.nodes[source_id]
+                dest_node = self.nodes[dest_id]
+                node["links_to"].append(dest_node["title"])
     
     def query_table(self,table  : str):
         conn = self.conn
