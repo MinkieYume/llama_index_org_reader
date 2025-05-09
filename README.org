@@ -2,4 +2,18 @@
 * 介绍
 一个提取Org Roam的笔记，并拆分文本进行嵌入(embedding)向量化，以便Rag检索的工具。
 
+* 设计思路
+** 读取模块(Reader)
+遍历数据库或文件，该文件中所有节点，以及每个节点对应的id、context、title、path、tags、source、links等信息。
 
+** 切分模块(Cliper)
+处理所有文本，并将其根据段落和token（语义单元），切分成清晰的碎片化Embedding格式，类似如下格式：
+#+BEGIN_QUOTE
+Embeding
+#+END_QUOTE
+
+** 向量化(Embedding)
+调用向量化模型，将其转化为向量。
+
+** 数据库存储
+将获得的向量存入数据库。
