@@ -1,0 +1,5 @@
+#+TITLE: Org Roam To RAG
+* 介绍
+一个提取Org Roam的笔记，并拆分文本进行嵌入(embedding)向量化，以便Rag检索的工具。
+
+
