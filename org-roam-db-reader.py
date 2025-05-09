@@ -33,14 +33,15 @@ class OrgRoamDbReader:
     def read_links(self):
         rows = self.query_table("links")
         for row in rows:
-            if rows[3] == "id": # type == "id"
+            if rows[3] == "id":  # type == "id"
                 source_id = row[1].strip('"')
                 dest_id = row[2].strip('"')
                 node = self.nodes[source_id]
-                dest_node = self.nodes[dest_id]
-                node["links_to"].append(dest_node["title"])
+                if dest_id in reader.nodes:
+                    dest_node = self.nodes[dest_id]
+                    node["links_to"].append(dest_node["title"])
     
-    def query_table(self,table  : str):
+    def query_table(self,table   : str):
         conn = self.conn
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM "+table)
@@ -48,10 +49,10 @@ class OrgRoamDbReader:
         cursor.close()
         return rows
     
-    def  _init_database(self):
+    def   _init_database(self):
         self.conn = sqlite3.connect(self.db_file)
 
-    def  _parse_args(self):
+    def   _parse_args(self):
         parser = argparse.ArgumentParser(description="Org-roam database reader.")
         parser.add_argument("--db", help="Path to the org-roam database file.", default=None)
         parser.add_argument("--dir", help="Path to the directory containing Org Roam files")
@@ -62,7 +63,7 @@ class OrgRoamDbReader:
         if args.dir:
             self.roam_path = args.dir
 
-if  __name__ == "__main__":
+if   __name__  ==  "__main__":
     reader = OrgRoamDbReader()
     reader.read_nodes()
     reader.read_tags_to_node()
