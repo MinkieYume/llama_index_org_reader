@@ -1,3 +1,5 @@
+from pathlib import Path
+import sqlite3
 import argparse
 
 
@@ -15,10 +17,13 @@ class OrgRoamDbReader:
     def parse_args(self):
         parser = argparse.ArgumentParser(description="Org-roam database reader.")
         parser.add_argument("--db", help="Path to the org-roam database file.", default=None)
+        parser.add_argument("--dir", help="Path to the directory containing Org Roam files")
         args = parser.parse_args()
 
         if args.db:
             self.db_file = Path(args.db)
+        if args.dir:
+            self.roam_path = args.dir
 
 if     __name__    ==    "__main__":
     reader = OrgRoamDbReader()
