@@ -29,6 +29,13 @@ class OrgRoamDbReader:
             node = self.nodes[id]
             node["tags"].append(row[1].strip('"'))
 
+    #------only change this---------
+    def read_links():
+        pass #dest_id = row[2]
+        pass #source_id = row[1]
+        pass #node["links_to"] = [source_title1,source_title2]
+    #--------------------------------
+    
     def query_table(self,table : str):
         conn = self.conn
         cursor = conn.cursor()
