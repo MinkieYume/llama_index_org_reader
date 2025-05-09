@@ -16,7 +16,6 @@ class OrgRoamDbReader:
     def parse_args(self):
         
 
-
 if __name__ == "__main__":
     reader = OrgRoamDbReader()
     reader.parse_args()
