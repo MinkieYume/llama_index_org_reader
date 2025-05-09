@@ -1,26 +1,23 @@
-#!/usr/bin/env python3
-from pathlib import Path
 import sqlite3
-import argparse
+from pathlib import Path
+
 
 class OrgRoamDbReader:
-    def    __init__(self):
-        self.db_file = Path.home()     /   "org-roam/org-roam.db"
-        self.roam_path = Path.home()     /   "org-roam"
+    def __init__(self):
+        self.db_file = Path.home() / "org-roam/org-roam.db"
 
-    def _read_nodes():
+    def _read_nodes(self):
+        conn = sqlite3.connect(self.db_file)
+        cursor = conn.cursor()
+        cursor.execute("SELECT nodes FROM org_node")
+        rows = cursor.fetchall()
+        return [row[0] for row in rows]
+
+    def parse_args(self):
         pass
 
-    def parse_args():
-        parser = argparse.ArgumentParser(description="Org Roam Database Reader")
-        parser.add_argument("--db", help="Path to the Org Roam database file")
-        parser.add_argument("--dir", help="Path to the directory containing Org Roam files")
-        args = parser.parse_args()
-        if args.db:
-            self.db_file = args.db
-        if args.dir:
-            self.roam_path = args.dir
 
-if  __name__      ==   "__main__":
-    args = OrgRoamDbReader.parse_args()
+if __name__ == "__main__":
     reader = OrgRoamDbReader()
+    reader.parse_args()
+    print(reader._read_nodes())
