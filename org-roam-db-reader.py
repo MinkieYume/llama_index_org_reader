@@ -7,20 +7,26 @@ class OrgRoamDbReader:
     def __init__(self):
         self.db_file = Path.cwd() / "org-roam.db"
         self.roam_path = Path.cwd() / "org-roam"
-        print(self.db_file)
+        self._parse_args()
+        self._init_database()
 
-    def _read_nodes(self):
-        conn = sqlite3.connect(self.db_file)
+    def read_nodes(self):
+        var rows = self.query_table("nodes")
+        for row in rows:
+            pass
+
+    def query_table(self,table : str):
+        conn = self.conn
         cursor = conn.cursor()
-        cursor.execute("SELECT id FROM nodes")
+        cursor.execute("SELECT * FROM "+table)
         rows = cursor.fetchall()
         cursor.close()
-        return [row[0] for row in rows]
+        return rows
+    
+    def _init_database(self):
+        self.conn = sqlite3.connect(self.db_file)
 
-    def init_database():
-        conn = sqlite3.connect(self.db_file)
-
-    def parse_args(self):
+    def _parse_args(self):
         parser = argparse.ArgumentParser(description="Org-roam database reader.")
         parser.add_argument("--db", help="Path to the org-roam database file.", default=None)
         parser.add_argument("--dir", help="Path to the directory containing Org Roam files")
@@ -33,5 +39,4 @@ class OrgRoamDbReader:
 
 if __name__ == "__main__":
     reader = OrgRoamDbReader()
-    reader.parse_args()
-    print(reader._read_nodes())
+    reader.read_nodes()
