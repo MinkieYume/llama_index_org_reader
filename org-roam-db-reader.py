@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 class OrgRoamDbReader:
-    def __init__(self):
+    def  __init__(self):
         self.db_file = Path.home() / "org-roam/org-roam.db"
 
     def _read_nodes(self):
@@ -16,7 +16,7 @@ class OrgRoamDbReader:
     def parse_args(self):
         
 
-if __name__ == "__main__":
+if  __name__ == "__main__":
     reader = OrgRoamDbReader()
     reader.parse_args()
     print(reader._read_nodes())
