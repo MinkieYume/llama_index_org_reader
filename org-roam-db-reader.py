@@ -18,9 +18,16 @@ class OrgRoamDbReader:
                 "id":row[0].strip('"'),
                 "file":row[1].strip('"'),
                 "title":row[8].strip('"'),
+                "tags":[]
             }
             self.nodes[node["id"]] = node
-        print(self.nodes)
+
+    def read_tags_to_node(self):
+        rows = self.query_table("tags")
+        for row in rows:
+            id = row[0].strip('"')
+            node = self.nodes[id]
+            node["tags"].append(row[1].strip('"'))
 
     def query_table(self,table : str):
         conn = self.conn
@@ -47,3 +54,5 @@ class OrgRoamDbReader:
 if __name__ == "__main__":
     reader = OrgRoamDbReader()
     reader.read_nodes()
+    reader.read_tags_to_node()
+    print(reader.nodes)
