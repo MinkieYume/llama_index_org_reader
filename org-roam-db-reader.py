@@ -11,9 +11,16 @@ class OrgRoamDbReader:
         self._init_database()
 
     def read_nodes(self):
-        var rows = self.query_table("nodes")
+        rows = self.query_table("nodes")
+        self.nodes = []
         for row in rows:
-            pass
+            node = {
+                "id":row[0].strip('"'),
+                "file":row[1].strip('"'),
+                "title":row[8].strip('"'),
+            }
+            self.nodes.append(node)
+        print(self.nodes)
 
     def query_table(self,table : str):
         conn = self.conn
