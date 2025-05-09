@@ -3,7 +3,7 @@ import sqlite3
 from pathlib import Path
 
 class OrgRoamDbReader:
-    def __init__(self, db_file,roam_path):
+    def __init__(self, db_file, roam_path):
         self.db_file = db_file
         self.roam_path = roam_path
 
