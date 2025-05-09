@@ -33,13 +33,12 @@ class OrgRoamDbReader:
     def read_links(self):
         rows = self.query_table("links")
         for row in rows:
-            if rows[3] == "id":  # type == "id"
-                source_id = row[1].strip('"')
-                dest_id = row[2].strip('"')
-                node = self.nodes[source_id]
-                if dest_id in reader.nodes:
-                    dest_node = self.nodes[dest_id]
-                    node["links_to"].append(dest_node["title"])
+            source_id = row[1].strip('"')
+            dest_id = row[2].strip('"')
+            node = self.nodes[source_id]
+            if dest_id in reader.nodes:
+                dest_node = self.nodes[dest_id]
+                node["links_to"].append(dest_node["title"])
     
     def query_table(self,table   : str):
         conn = self.conn
