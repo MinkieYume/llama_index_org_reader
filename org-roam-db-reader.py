@@ -7,6 +7,8 @@ class OrgRoamDbReader:
     def    __init__(self):
         self.db_file = Path.home()     /   "org-roam/org-roam.db"
         self.roam_path = Path.home()     /   "org-roam"
+    def _read_nodes():
+        pass
 
     def parse_args():
         parser = argparse.ArgumentParser(description="Org Roam Database Reader")
