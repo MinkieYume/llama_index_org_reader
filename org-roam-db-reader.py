@@ -4,15 +4,21 @@ import argparse
 
 
 class OrgRoamDbReader:
-    def     __init__(self):
-        self.db_file = Path.home() / "org-roam/org-roam.db"
+    def __init__(self):
+        self.db_file = Path.cwd() / "org-roam.db"
+        self.roam_path = Path.cwd() / "org-roam"
+        print(self.db_file)
 
-    def    _read_nodes(self):
+    def _read_nodes(self):
         conn = sqlite3.connect(self.db_file)
         cursor = conn.cursor()
-        cursor.execute("SELECT nodes FROM org_node")
+        cursor.execute("SELECT id FROM nodes")
         rows = cursor.fetchall()
+        cursor.close()
         return [row[0] for row in rows]
+
+    def init_database():
+        conn = sqlite3.connect(self.db_file)
 
     def parse_args(self):
         parser = argparse.ArgumentParser(description="Org-roam database reader.")
@@ -25,7 +31,7 @@ class OrgRoamDbReader:
         if args.dir:
             self.roam_path = args.dir
 
-if     __name__    ==    "__main__":
+if __name__ == "__main__":
     reader = OrgRoamDbReader()
     reader.parse_args()
     print(reader._read_nodes())
