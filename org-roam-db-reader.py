@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import sqlite3
 from pathlib import Path
-import sys
+import argparse
 
 class OrgRoamDbReader:
     def __init__(self, db_file, roam_path):
