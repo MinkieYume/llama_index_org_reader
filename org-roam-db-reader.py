@@ -14,7 +14,7 @@ class OrgRoamDbReader:
         return [row[0] for row in rows]
 
     def parse_args(self):
-        pass
+        
 
 
 if __name__ == "__main__":
