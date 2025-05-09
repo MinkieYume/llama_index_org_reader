@@ -12,14 +12,14 @@ class OrgRoamDbReader:
 
     def read_nodes(self):
         rows = self.query_table("nodes")
-        self.nodes = []
+        self.nodes = {}
         for row in rows:
             node = {
                 "id":row[0].strip('"'),
                 "file":row[1].strip('"'),
                 "title":row[8].strip('"'),
             }
-            self.nodes.append(node)
+            self.nodes[node["id"]] = node
         print(self.nodes)
 
     def query_table(self,table : str):
