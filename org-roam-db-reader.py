@@ -23,4 +23,4 @@ class OrgRoamDbReader:
 
 if  __name__      ==   "__main__":
     args = OrgRoamDbReader.parse_args()
-    reader = OrgRoamDbReader(db_file, roam_path)
+    reader = OrgRoamDbReader()
