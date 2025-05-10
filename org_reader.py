@@ -17,7 +17,7 @@ class OrgReader(BaseReader):
         if not isinstance(file, Path):
             file = Path(file)
 
-        docments = _parse_org(file)
+        docments = self._parse_org(file)
         
         if extra_meta is not None:
             for doc in docments:
@@ -28,11 +28,12 @@ class OrgReader(BaseReader):
     def _parse_org(self, file) -> List[Document]:
         root = orgparse.load(file)
         
-        text = self._parse_org(file)
+        text = "wwww"
         metadata = {
             "file": file.name,
         }
-        return []
+        print(self._org_to_dict(root))
+        return [Document()]
 
     # 将Org文件解析为字典列表
     def _org_to_dict(self, root) -> List[Dict]:
