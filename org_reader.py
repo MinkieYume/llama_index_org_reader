@@ -35,12 +35,12 @@ class OrgReader(BaseReader):
         print(self._org_to_dict(root))
         return [Document()]
 
-# fix methods below:
-# 请不要动其它代码，仅更改该方法：
     # 将Org文件解析为字典列表
     def _org_to_dict(self, root) -> List[Dict]:
         headings = []
+        root_keyword = _format_keywords(root)
         title = "" # 第一个node第一行的 #+Title: 标题 (#+TITLE不区分大小写，只截取后面的标题)
+        
         for node in root:
             heading_text = title
             if node.heading:
@@ -73,7 +73,8 @@ class OrgReader(BaseReader):
         
         return headings
 
-    def _format_keywords(): # 将当前node的 #+key: word 格式转化为 [{key:word}]
+# 请不要动其它代码，仅更改该方法：
+    def _format_keywords(self,node): # 将当前node的 #+key: word 格式转化为 [{key:word}]
         pass
     
     def _format_text(self, node):
