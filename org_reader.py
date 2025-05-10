@@ -169,6 +169,3 @@ class OrgReader(BaseReader):
             }
             links.append(link_dict)
         return links
-
-    def _format_targets(self,node):
-        pass
