@@ -2,16 +2,54 @@ from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
 from typing import Optional, Dict, List
 from pathlib import Path
+from org_reader import OrgReader
 import orgparse
 import sqlite3
 
-class OrgRoamDbReader:
-    def  __init__(self,db_file_path):
-        self.db_file = db_file_path
+class OrgRoamDbReader(BaseReader):
+    def load_data(
+            self,
+            file:Path,
+            extra_meta: Optional[Dict] = None,
+    ) -> List[Document]:
+        """Parse File"""
+        if not isinstance(file, Path):
+            file = Path(file)
+        
+        self.db_file = file
         self._init_database()
         self._read_nodes()
         self._read_tags()
         self._read_links()
+
+        documents = []
+        nodes = self.get_nodes()
+        for node_id in nodes:
+            node_doc = self.parse_node(nodes[node_id])
+            documents = documents + node_doc
+        
+        if extra_meta is not None:
+            for doc in docments:
+                doc.metadata.update(extra_meta)
+        
+        return documents
+
+    def parse_node(self,node:dict) -> List[Document]:
+        file = node["file"]
+        links_to = node["links_to"]
+        tags = node["tags"]
+        reader = OrgReader()
+        node_docs = []
+        node_documents = reader.load_data(file,{"links_to":links_to})
+        for node_doc in node_documents:
+            node_doc.doc_id = node["id"]
+            tag_data = node_doc.metadata["tags"]
+            if tag_data:
+                node_doc.metadata["tags"] += tags
+            else:
+                node_doc.metadata["tags"] = tags
+        return node_documents
+        
 
     def _read_nodes(self):
         rows = self.query_table("nodes")
@@ -56,10 +94,3 @@ class OrgRoamDbReader:
 
     def get_nodes(self):
         return self.nodes
-    
-    def get_context(self,id):
-        file = self.nodes[id]["file"]
-        root = orgparse.load(file)
-        for node in root:
-            print(node)
-        return root

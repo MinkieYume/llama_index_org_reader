@@ -2,6 +2,7 @@ from llama_index.core.readers.base import BaseReader
 from llama_index.core.schema import Document
 from typing import Optional, Dict, List
 from pathlib import Path
+import os
 import orgparse
 import re
 
@@ -29,24 +30,27 @@ class OrgReader(BaseReader):
     def _parse_org(self, file) -> List[Document]:
         root = orgparse.load(file)
         documents = []
-        for dict in self._org_to_dict(root):
+        for dict in self._org_to_dict(root,file):
             text = dict.pop("text")
-            dict["file"] = file
-            doc = Document(text=text,metadata=dict)
+            doc_id = dict.pop("id")
+            dict["file"] = str(file)
+            doc = Document(text=text,metadata=dict,doc_id=doc_id)
             documents.append(doc)
         return documents
 
     # 将Org文件解析为字典列表
-    def _org_to_dict(self, root) -> List[Dict]:
+    def _org_to_dict(self, root , file) -> List[Dict]:
         headings = []
         root_keyword = self._format_keywords(root)
         title = root_keyword["TITLE"]
         
         for node in root:
+            doc_id = os.path.basename(file)
             heading_list = []
             heading_text = ""
             if title:
                 heading_list.append(title)
+                doc_id = title
             if node.heading:
                 for l in range (1,node.level):
                     p_node = node.get_parent(l)
@@ -67,9 +71,19 @@ class OrgReader(BaseReader):
                 todo = node.todo
                 pripority = node.pripority
             if node.properties:
+                if node.get_property("ID"):
+                    doc_id = node.get_property("ID")
+                elif node.get_property("id"):
+                    doc_id = node.get_property("id")
+                elif node.get_property("Id"):
+                    doc_id = node.get_property("Id")
+                elif node.get_property("iD"):
+                    doc_id = node.get_property("Id")
+                
                 properties = node.properties
             
             heading_dict = {
+                "id" : doc_id,
                 "heading": heading_text,
                 "text": text,
                 "tags": tags,
