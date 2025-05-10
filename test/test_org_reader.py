@@ -5,6 +5,6 @@ from org_reader import OrgReader
 from pathlib import Path
 
 if   __name__  ==  "__main__":
-    testorg = Path.cwd() / "org-roam.db"
+    file = Path.cwd() / "test_file.org"
     reader = OrgReader()
-    print(reader.load_data())
+    print(reader.load_data(file))
