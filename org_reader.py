@@ -39,7 +39,7 @@ class OrgReader(BaseReader):
     def _org_to_dict(self, root) -> List[Dict]:
         headings = []
         root_keyword = self._format_keywords(root)
-        title = None # 第一个node第一行的 #+Title: 标题 (#+TITLE不区分大小写，只截取后面的标题)
+        title = None  # 第一个node第一行的 #+Title: 标题 (#+TITLE不区分大小写，只截取后面的标题)
         
         for node in root:
             heading_list = []
@@ -61,14 +61,14 @@ class OrgReader(BaseReader):
             pripority = ""
 #            links = self._format_links(node)
 #            properties = {prop.key: prop.value for prop in node.properties} if node.properties else None
- #           footnotes = [{"text": fn.text, "id": fn.id} for fn in node.footnotes] if node.footnotes else []
+  #           footnotes =  [{"text": fn.text, "id": fn.id} for fn in node.footnotes] if node.footnotes else []
             
             heading_dict = {
                 "heading": heading_text,
 #                "text": text,
                 "tags": tags,
                 "timestamps": timestamps,
-#               "links": links,
+#                "links": links,
 #                "priority": node.priority,
 #                "todo": node.todo,
 #                "properties": properties,
@@ -79,10 +79,21 @@ class OrgReader(BaseReader):
         
         return headings
 
-# 请不要动其它代码，仅更改该方法：
-    def _format_keywords(self,node): # 将当前node的 #+key: word 格式转化为 [{key:word}]
-        return [{}]
-    
+    # 请不要动其它代码，仅更改该方法：
+    def _format_keywords(self,node):  # 将当前node的 #+key: word 格式转化为  [{key:word}]
+        keywords = []
+        for keyword in node.iter_keywords():
+            key = keyword.keyword
+            value = keyword.value
+            if key and value:
+                keyword_dict = {
+                    "key": key,
+                    "value": value,
+                }
+                keywords.append(keyword_dict)
+        
+        return keywords
+
     def _format_text(self, node):
         text = node.get_body()
         return text.strip()
