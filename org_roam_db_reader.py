@@ -1,5 +1,6 @@
-from llama_index.readers.base import BaseReader
-from llama_index import Document
+from llama_index.core.readers.base import BaseReader
+from llama_index.core.schema import Document
+from typing import Optional, Dict, List
 from pathlib import Path
 import orgparse
 import sqlite3
@@ -62,9 +63,3 @@ class OrgRoamDbReader:
         for node in root:
             print(node)
         return root
-
-if   __name__  ==  "__main__":
-    db_file = Path.cwd() / "org-roam.db"
-    reader = OrgRoamDbReader(db_file)
-    id = 'e7e2456e-e18d-44e9-93a4-9a990f77e0e6'
-    print(reader.get_context(id))

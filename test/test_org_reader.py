@@ -7,4 +7,9 @@ from pathlib import Path
 if   __name__  ==  "__main__":
     file = Path.cwd() / "test_file.org"
     reader = OrgReader()
-    print(reader.load_data(file))
+    doctments = reader.load_data(file)
+    for doc in doctments:
+        print("\n")
+        print(doc.text)
+        print(doc.metadata)
+        

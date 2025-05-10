@@ -11,22 +11,29 @@ class OrgReader(BaseReader):
     def load_data(
             self,
             file:Path,
-            extra_info: Optional[Dict] = None,
+            extra_meta: Optional[Dict] = None,
     ) -> List[Document]:
         """Parse File"""
         if not isinstance(file, Path):
             file = Path(file)
-        
-        text = self._parse_org(file)
-        metadata = {"file_name": file.name}
-        
-        if extra_info is not None:
-            metadata.update(extra_info)
-        return [Document(text=text, metadata=metadata or {})]
 
-    def _parse_org(self,file):
+        docments = _parse_org
+        
+        if extra_meta is not None:
+            for doc in docments:
+                doc.metadata.update(extra_meta)
+        
+        return docments
+
+    def _parse_org(self,file) -> List[Document]:
         root = orgparse.load(file)
         
+        text = self._parse_org(file)
+        metadata = {
+            "file": file.name,
+        }
+        return []
+    
+    def _org_to_tups(self,root) -> List[Tuple[Optional[str], str]]::
         for node in root:
-            print(node)
-        return str(root)
+            pass
