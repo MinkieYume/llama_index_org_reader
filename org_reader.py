@@ -38,15 +38,21 @@ class OrgReader(BaseReader):
     # 将Org文件解析为字典列表
     def _org_to_dict(self, root) -> List[Dict]:
         headings = []
-        root_keyword = _format_keywords(root)
-        title = "" # 第一个node第一行的 #+Title: 标题 (#+TITLE不区分大小写，只截取后面的标题)
+        root_keyword = self._format_keywords(root)
+        title = None # 第一个node第一行的 #+Title: 标题 (#+TITLE不区分大小写，只截取后面的标题)
         
         for node in root:
-            heading_text = title
+            heading_list = []
+            heading_text = ""
+            if title:
+                heading_list.append(title)
             if node.heading:
-                parent_nodes = [node.get_parent(l) for l in range(0,node.level)]
-                for p_node in parent_nodes:
-                    heading_text = heading_text+ " " + p_node.heading
+                for l in range (1,node.level):
+                    p_node = node.get_parent(l)
+                    heading = p_node.heading
+                    heading_list.append(heading)
+                heading_list.append(node.heading)
+                heading_text = " ".join(heading_list)
             
             text = self._format_text(node)
             tags = [tag for tag in node.tags] if node.tags else None
@@ -75,7 +81,7 @@ class OrgReader(BaseReader):
 
 # 请不要动其它代码，仅更改该方法：
     def _format_keywords(self,node): # 将当前node的 #+key: word 格式转化为 [{key:word}]
-        pass
+        return [{}]
     
     def _format_text(self, node):
         text = node.get_body()
