@@ -38,28 +38,32 @@ class OrgReader(BaseReader):
     # 将Org文件解析为字典列表
     def _org_to_dict(self, root) -> List[Dict]:
         headings = []
+        title = node.get_property()
         for node in root:
             heading_text = ""
+            
             if node.heading:
-                heading_text = " ".join(node.heading)
+                heading_text = node.heading
             
             text = self._format_text(node)
-            tags = [tag.name for tag in node.tags] if node.tags else None
+            tags = [tag for tag in node.tags] if node.tags else None
             timestamps = self._format_timestamps(node)
-            links = self._format_links(node)
-            properties = {prop.key: prop.value for prop in node.properties} if node.properties else None
-            footnotes = [{"text": fn.text, "id": fn.id} for fn in node.footnotes] if node.footnotes else []
+            todo = ""
+            pripority = ""
+#            links = self._format_links(node)
+#            properties = {prop.key: prop.value for prop in node.properties} if node.properties else None
+ #           footnotes = [{"text": fn.text, "id": fn.id} for fn in node.footnotes] if node.footnotes else []
             
             heading_dict = {
                 "heading": heading_text,
-                "text": text,
+#                "text": text,
                 "tags": tags,
                 "timestamps": timestamps,
-                "links": links,
-                "priority": node.priority,
-                "todo": node.todo,
-                "properties": properties,
-                "footnotes": footnotes,
+#               "links": links,
+#                "priority": node.priority,
+#                "todo": node.todo,
+#                "properties": properties,
+#                "footnotes": footnotes,
             }
             
             headings.append(heading_dict)
@@ -67,19 +71,11 @@ class OrgReader(BaseReader):
         return headings
 
     def _format_text(self, node):
-        text = ""
-        for item in node:
-            if isinstance(item, orgparse.OrgNode):
-                text += self._format_text(item)
-            elif isinstance(item, str):
-                text += item + "\n"
+        text = node.get_body()
         return text.strip()
 
     def _format_timestamps(self, node):
-        timestamps = []
-        for timestamp in node.timestamps:
-            timestamps.append(timestamp.isoformat())
-        return ", ".join(timestamps)
+        return node.get_timestamps(True,True,True,True)
 
     def _format_links(self, node):
         links = []
