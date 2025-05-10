@@ -28,13 +28,13 @@ class OrgReader(BaseReader):
 
     def _parse_org(self, file) -> List[Document]:
         root = orgparse.load(file)
-        
-        text = "wwww"
-        metadata = {
-            "file": file.name,
-        }
-        print(self._org_to_dict(root))
-        return [Document()]
+        documents = []
+        for dict in self._org_to_dict(root):
+            text = dict.pop("text")
+            dict["file"] = file
+            doc = Document(text=text,metadata=dict)
+            documents.append(doc)
+        return documents
 
     # 将Org文件解析为字典列表
     def _org_to_dict(self, root) -> List[Dict]:
@@ -58,6 +58,7 @@ class OrgReader(BaseReader):
             text = self._format_text(node)
             tags = [tag for tag in node.tags] if node.tags else None
             timestamps = self._format_timestamps(node)
+            keywords = self._format_keywords(node)
             links = self._format_links(node)
             todo = ""
             pripority = "B"
@@ -77,6 +78,7 @@ class OrgReader(BaseReader):
                 "priority": pripority,
                 "todo": todo,
                 "properties": properties,
+                "keywords":keywords
             }
             
             headings.append(heading_dict)
