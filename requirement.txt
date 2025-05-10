@@ -1,0 +1,7 @@
+chromadb
+llama-index-core
+llama-index-readers-file
+llama-index-llms-ollama
+llama-index-embeddings-ollama
+llama-index-vector-stores-chroma
+orgparse
