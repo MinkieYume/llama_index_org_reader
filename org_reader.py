@@ -1,5 +1,6 @@
-from llama_index.readers.base import BaseReader
-from llama_index import Document
+from llama_index.core.readers.base import BaseReader
+from llama_index.core.schema import Document
+from typing import Optional, Dict, List
 from pathlib import Path
 import orgparse
 
