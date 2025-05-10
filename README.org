@@ -1,16 +1,15 @@
-#+TITLE: Org Roam To RAG
+#+TITLE: Org Roam DB Reader
 * 介绍
-一个提取Org Roam的笔记，并拆分文本进行嵌入(embedding)向量化，以便Rag检索的工具。
+一个提取Org Roam的笔记的LLamaIndex数据连接器。
 
 * 设计思路
 ** 读取模块(Reader)
 遍历数据库或文件，该文件中所有节点，以及每个节点对应的id、context、title、path、tags、source、links等信息。
 
-** 处理模块(Handler)
-处理所有文本，并将其根据段落和token（语义单元），切分成清晰的碎片化Embedding格式。
+处理所有文本，并将其根据段落和token（语义单元），切分成适合向量化的doc_list格式。
+预期的格式如下所示：
+#+BEGIN_QUOTE
+文档:
+  
+#+END_QUOTE
 
-** 向量化(Embedding)
-调用向量化模型，将其转化为向量。
-
-** 数据库存储
-将获得的向量存入数据库。

@@ -1,14 +1,12 @@
+from llama_index.readers.base import BaseReader
+from llama_index import Document
 from pathlib import Path
 import orgparse
 import sqlite3
-import argparse
-
 
 class OrgRoamDbReader:
-    def  __init__(self):
-        self.db_file = Path.cwd() / "org-roam.db"
-        self.roam_path = Path.cwd() / "org-roam"
-        self._parse_args()
+    def  __init__(self,db_file_path):
+        self.db_file = db_file_path
         self._init_database()
         self._read_nodes()
         self._read_tags()
@@ -47,17 +45,6 @@ class OrgRoamDbReader:
     def   _init_database(self):
         self.conn = sqlite3.connect(self.db_file)
 
-    def   _parse_args(self):
-        parser = argparse.ArgumentParser(description="Org-roam database reader.")
-        parser.add_argument("--db", help="Path to the org-roam database file.", default=None)
-        parser.add_argument("--dir", help="Path to the directory containing Org Roam files")
-        args = parser.parse_args()
-
-        if args.db:
-            self.db_file = Path(args.db)
-        if args.dir:
-            self.roam_path = args.dir
-
     def query_table(self,table:str):
         conn = self.conn
         cursor = conn.cursor()
@@ -66,6 +53,9 @@ class OrgRoamDbReader:
         cursor.close()
         return rows
 
+    def get_nodes(self):
+        return self.nodes
+    
     def get_context(self,id):
         file = self.nodes[id]["file"]
         root = orgparse.load(file)
@@ -74,6 +64,7 @@ class OrgRoamDbReader:
         return root
 
 if   __name__  ==  "__main__":
-    reader = OrgRoamDbReader()
+    db_file = Path.cwd() / "org-roam.db"
+    reader = OrgRoamDbReader(db_file)
     id = 'e7e2456e-e18d-44e9-93a4-9a990f77e0e6'
     print(reader.get_context(id))

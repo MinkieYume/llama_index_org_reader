@@ -1,1 +1,0 @@
-/home/MinkieYume/工作目录/程序开发/AI项目/org-roam-rag/org-roam-db-reader.py

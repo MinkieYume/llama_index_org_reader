@@ -1,0 +1,92 @@
+#+TITLE: 测试文本
+:PROPERTIES:
+  :ID:       abc123
+  :CUSTOM:   foo
+:END:
+* 介绍
+:PROPERTIES:
+  :ID:       2222
+  :CUSTOM:   wwwwd
+:END:
+一个提取Org Roam的笔记的LLamaIndex数据连接器。
+
+* 设计思路
+:PROPERTIES:
+  :ID:       2222
+  :CUSTOM:   wwwwd
+:END:
+** 读取模块(Reader)
+遍历数据库或文件，该文件中所有节点，以及每个节点对应的id、context、title、path、tags、source、links等信息。
+
+处理所有文本，并将其根据段落和token（语义单元），切分成适合向量化的doc_list格式。
+预期的格式如下所示：
+#+BEGIN_SRC python
+print("hello world")
+#+END_SRC
+
+*** test3
+:PROPERTIES:
+  :ID:       2222
+  :CUSTOM:   wwwwd
+:END:
+[[*介绍][介绍]]
+
+[[file:~/工作目录/程序开发/AI项目/org-roam-rag/README.org::*读取模块(Reader)][读取模块(Reader)]]
+
+**** test4
+#+ATTR: :width 60% :align left
+| CN | EN  | JP       |
+| 你 | you | あなた   |
+| 我 | me  | 私       |
+| 他 | him | あのひと |
+| 她 | her | あのこ   |
+
+* TODO [#A] 完成 Reader 接口设计                            :work:org:
+* NEXT [#B] 实现加载模块
+* DONE [#C] 编写单元测试                                      :test:
+
+** 读文档大纲规划
+   SCHEDULED: <2025-05-12 周一 10:00>
+   DEADLINE:  <2025-05-15 周四>
+
+* 列表项测试
+- 纯文本列表项
+  1. 嵌套有序子项
+  2. 另一个子项
+- [ ] 待办事项一
+- [X] 已完成事项
+
+* 定义列表
+名词1 :: 定义内容一
+名称二 :: 定义内容二，带 *强调* 、 /斜体/ 等。
+~lol~ -wwww- _wwww_ 
+=www=
+
+[[https://example.com][示例链接]]
+
+这是脚注[fn:1]的测试。
+
+[fn:1] 脚注内容。
+
+
+#+BEGIN_EXAMPLE
+这是 Example 块，原样输出。
+#+END_EXAMPLE
+
+#+BEGIN_VERSE
+这是 Verse 块，
+多行诗意文本。
+#+END_VERSE
+
+#+BEGIN_QUOTE
+引用块内容，用于测试引用解析。
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :results output
+(message "Org test")
+#+END_SRC
+
+<<目标点>>
+在文中跳转：[[目标点][跳转到目标]]
+
+CLOCK: [2025-05-10 土 11:00]--[2025-05-10 土 11:30] =>  0:30
