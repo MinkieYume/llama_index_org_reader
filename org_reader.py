@@ -44,9 +44,9 @@ class OrgReader(BaseReader):
         for node in root:
             heading_text = title
             if node.heading:
-                parent_headings = [node.get_parent(l) for l in range(node.level)]
-                for heading in parent_headings:
-                    heading_text += " "+heading
+                parent_nodes = [node.get_parent(l) for l in range(0,node.level)]
+                for p_node in parent_nodes:
+                    heading_text = heading_text+ " " + p_node.heading
             
             text = self._format_text(node)
             tags = [tag for tag in node.tags] if node.tags else None
