@@ -89,11 +89,11 @@ class OrgReader(BaseReader):
                 "heading": heading_text,
                 "text": text,
                 "tags": tags,
-#                "timestamps": timestamps,
-#                "links": links,
+                "links": links,
                 "priority": pripority,
                 "todo": todo,
-#                "properties": properties,
+#                "properties": properties,                
+#                "timestamps": timestamps,                
 #                "keywords":keywords
             }
             
@@ -114,10 +114,11 @@ class OrgReader(BaseReader):
         text = node.get_body(format="raw")
         text = self.remove_org_formatting(text)
         link_pattern = r"\[\[([^\[\]]+?)(?:\]\[([^\[\]]+?))?\]\]"
-        text = re.sub(link_pattern, r"\2", text)
+        text = re.sub(link_pattern, r"\2(\1)", text)
         dy_pattern = re.compile(r'^\s*["“]?([^"\n:]+)["”]?\s*::', re.MULTILINE)
         text = re.sub(dy_pattern, r"\1:", text)
         text = self.replace_footnotes(text)
+#        print(text)
         return text.strip()
 
     def remove_org_formatting(self,text: str) -> str:
@@ -177,11 +178,9 @@ class OrgReader(BaseReader):
                 if re.search(pattern, line, re.IGNORECASE):
                     break
                 pos+=1
-            link_dict = {
-                "pos": pos,
-                "title": link[1],
-                "dest": dest,
-                "type": type,
-            }
-            links.append(link_dict)
-        return links
+            if link[1]:
+                dest = link[1]
+            link_str = "("+"position: "+str(pos)+" link_to: "+dest+" type: "+type+")"
+            links.append(link_str)
+        links_str = " ".join(links)
+        return links_str

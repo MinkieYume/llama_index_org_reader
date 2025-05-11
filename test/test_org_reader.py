@@ -10,6 +10,6 @@ if   __name__  ==  "__main__":
     doctments = reader.load_data(file)
     for doc in doctments:
         print("\n")
-        print(doc.text)
-        print(doc.metadata)
+#        print(doc.text)
+#        print(doc.metadata)
         
