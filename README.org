@@ -1,6 +1,7 @@
 #+TITLE: Org_Reader
 * 介绍
-一个提取Org Roam的笔记的LLamaIndex数据连接器。
+一个解析Org文件的的LLamaIndex数据连接器。
+
 该项目提供了将自动解析和格式化org，文件，并自动将org中的链接、标签和层级化标题存入metadata的功能。
 该项目输出的documents结构是：单个document代表一个标题层级。
 
