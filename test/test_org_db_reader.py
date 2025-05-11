@@ -7,4 +7,7 @@ from org_roam_db_reader import OrgRoamDbReader
 if   __name__  ==  "__main__":
     db_file = Path.cwd() / "org-roam.db"
     reader = OrgRoamDbReader()
-    print(reader.load_data(db_file))
+    docs = reader.load_data(db_file)
+    for doc in docs:
+        print(doc.metadata)
+        print("\n")
