@@ -31,7 +31,7 @@ if __name__ == '__main__':
     org_roam_reader = OrgRoamDbReader()
     documents = org_roam_reader.load_data(defalt_db_path)
 
-    parser = SentenceSplitter(chunk_size=2048,chunk_overlap=20)
+    parser = SentenceSplitter(chunk_size=1024,chunk_overlap=20)
     print("正在切分节点...")
     nodes = parser.get_nodes_from_documents(documents)
     print(f"节点数：{len(nodes)}")

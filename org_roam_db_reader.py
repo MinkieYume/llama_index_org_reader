@@ -31,12 +31,11 @@ class OrgRoamDbReader(BaseReader):
         if extra_meta is not None:
             for doc in docments:
                 doc.metadata.update(extra_meta)
-        
         return documents
 
     def parse_node(self,node:dict) -> List[Document]:
         file = node["file"]
-        links_to = node["links_to"]
+        links_to = " ".join(node["links_to"])
         tags = node["tags"]
         reader = OrgReader()
         node_docs = []
@@ -45,9 +44,9 @@ class OrgRoamDbReader(BaseReader):
             node_doc.doc_id = node["id"]
             tag_data = node_doc.metadata["tags"]
             if tag_data:
-                node_doc.metadata["tags"] += tags
+                node_doc.metadata["tags"] += " ".join(tags)
             else:
-                node_doc.metadata["tags"] = tags
+                node_doc.metadata["tags"] = " ".join(tags)
         return node_documents
         
 

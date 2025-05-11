@@ -61,6 +61,8 @@ class OrgReader(BaseReader):
             
             text = self._format_text(node)
             tags = [tag for tag in node.tags] if node.tags else None
+            if tags != None:
+                tags = " ".join(tags)
             timestamps = self._format_timestamps(node)
             keywords = self._format_keywords(node)
             links = self._format_links(node)
@@ -87,12 +89,12 @@ class OrgReader(BaseReader):
                 "heading": heading_text,
                 "text": text,
                 "tags": tags,
-                "timestamps": timestamps,
-                "links": links,
+#                "timestamps": timestamps,
+#                "links": links,
                 "priority": pripority,
                 "todo": todo,
-                "properties": properties,
-                "keywords":keywords
+#                "properties": properties,
+#                "keywords":keywords
             }
             
             headings.append(heading_dict)
