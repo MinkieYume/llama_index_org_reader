@@ -1,15 +1,28 @@
-#+TITLE: Org Roam DB Reader
+#+TITLE: Org_Reader
 * 介绍
 一个提取Org Roam的笔记的LLamaIndex数据连接器。
+该项目提供了将自动解析和格式化org，文件，并自动将org中的链接、标签和层级化标题存入metadata的功能。
+该项目输出的documents结构是：单个document代表一个标题层级。
 
-* 设计思路
-** 读取模块(Reader)
-遍历数据库或文件，该文件中所有节点，以及每个节点对应的id、context、title、path、tags、source、links等信息。
+* 文件介绍
+org_reader.py：内置OrgReader类，可作为LLamaIndex的数据连接器，读取并将org文件整理成docments。
 
-处理所有文本，并将其根据段落和token（语义单元），切分成适合向量化的doc_list格式。
-预期的格式如下所示：
-#+BEGIN_QUOTE
-文档:
-  
-#+END_QUOTE
+org_roam_db_reader.py：内置OrgRoamDbReader类，自动将OrgRoam数据库中的所有Org文件整理成docments。
 
+org_roam_to_rags.py：简单的实现脚本，需要在脚本的开头更改变量参数为自己的路径，可自动将OrgRoam数据库中的所有节点保存为chroma数据库的向量。（这个只是自用的范例脚本，不建议直接用）
+
+* 使用方法
+
+** OrgReader
+#+BEGIN_SRC python
+  from org_reader import OrgReader
+  reader = OrgReader()
+  documents = reader.load_data("path/to/org.org")
+#+END_SRC
+
+** OrgRoamDbReader
+#+BEGIN_SRC python
+  from org_roam_db_reader import OrgRoamDbReader
+  reader = OrgRoamDbReader()
+  documents = reader.load_data("path/to/org_roam_db.db")
+#+END_SRC
